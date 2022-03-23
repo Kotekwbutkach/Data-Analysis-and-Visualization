@@ -45,14 +45,16 @@ def plot_countries_bar(df: pd.DataFrame, suptitle: str = None, title: str = None
     elif unit == "M":
         df = scale_df(df, 6)
 
-    figsize = (5, 8)
+    figsize = (8, 5)
 
     global FIGURE_COUNTER
     fig = plt.figure(FIGURE_COUNTER, figsize=figsize)
     FIGURE_COUNTER += 1
-
+    patterns = None
+    if color == "gs":
+        patterns = [".", "\\", "/", "O", "o"]
     colors, max_value = plot_setup(df, suptitle, title, unit, color)
-    barcollection = plt.bar(df.index, df[df.columns[0]], color=colors)
+    barcollection = plt.bar(df.index, df[df.columns[0]], color=colors, hatch=patterns)
 
     text_list = list()
 
@@ -74,6 +76,7 @@ def plot_countries_bar(df: pd.DataFrame, suptitle: str = None, title: str = None
             text_list.append(text)
 
     year_text = plt.text(4, max_value*1.05, df.columns[0], ha='center', va='bottom')
+    year_text.set_fontsize(20)
 
     def animate(i):
         y = df[df.columns[i]]
@@ -103,10 +106,13 @@ def plot_countries_line(df: pd.DataFrame, suptitle: str = None, title: str = Non
     FIGURE_COUNTER += 1
 
     colors, max_value = plot_setup(df, suptitle, title, unit, color)
-    linecollection = plt.plot(df.index, df[df.columns[0]], color=colors)
-
+    print(df.columns)
+    print(df.loc[df.index[0]])
+    for ind in df.index:
+        linecollection = plt.plot(df.columns, df.loc[ind])
+    anim = linecollection
     plt.show()
-    # return anim
+    return anim
 
 
 def show_plot():

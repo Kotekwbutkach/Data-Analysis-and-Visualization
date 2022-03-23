@@ -23,8 +23,12 @@ class HTMLstring:
         text += "\n"
         self.body += text
 
-    def add_image(self, filepath: str, alt: str):
-        text = f'<img src="{filepath}" alt="{alt}">\n'
+    def add_image(self, filepath: str, alt: str, start=False, end=False):
+        text = f'<img src="{filepath}" alt="{alt}">'
+        if start:
+            text = "<p> " + text
+        if end:
+            text = text + "<p>"
         self.body += text
 
     def save(self, filepath):
